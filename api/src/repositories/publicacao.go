@@ -103,3 +103,33 @@ func (repositorio publicacoes) Buscar(usuarioID uint64) ([]models.Publicacao, er
 	return publicacoes, nil
 
 }
+
+// Atualizar altera os dados de uma publicação no banco de dados
+func (repositorio publicacoes) Atualizar(ID uint64, publicacao models.Publicacao) error {
+	statement, erro := repositorio.db.Prepare("update publicacoes set titulo = ?, conteudo = ? where id = ?")
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro := statement.Exec(publicacao.Titulo, publicacao.Conteudo, ID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
+
+// Deletar excluí uma publicação do banco de dados
+func (respositorio publicacoes) Deletar(publicacaoID uint64) error {
+	statement, erro := respositorio.db.Prepare("delete from publicacoes where id = ?")
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(publicacaoID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
