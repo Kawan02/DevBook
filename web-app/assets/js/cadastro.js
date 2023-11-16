@@ -2,7 +2,6 @@ $('#formulario-cadastro').on('submit', criarUsuario)
 
 function criarUsuario(evento) {
     evento.preventDefault();
-    console.log("Testando...")
 
 
     if ($('#senha').val() != $('#confirmar-senha').val()) {
