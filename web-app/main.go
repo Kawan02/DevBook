@@ -16,8 +16,6 @@ func main() {
 	utils.CarregarTemplates()
 	rotas := router.Gerar()
 
-	fmt.Println(config.HashKey)
-
 	fmt.Printf("Escutando na porta: %d\n", config.Porta)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Porta), rotas))
 }
