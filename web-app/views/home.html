@@ -9,6 +9,13 @@
 
 <body>
     <h2>Página Principal</h2>
+
+    {{ range . }}
+    <h4> Título: {{ .Titulo }} </h4>
+    <h4> Conteudo: {{ .Conteudo }} </h4>
+
+    <hr />
+    {{ end }}
 </body>
 
 </html>
