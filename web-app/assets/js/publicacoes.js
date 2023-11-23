@@ -1,10 +1,11 @@
 $('#nova-publicacao').on('submit', criarPublicacao);
 $(document).on('click', '.curtir-publicacao', curtirPublicacao);
 $(document).on('click', '.descurtir-publicacao', descurtirPublicacao);
+$('#atualizar-publicacao').on('click', atualizarPublicacao);
+$('.deletar-publicacao').on('click', deletarPublicacao);
 
-
-// # => classes
-// . => ID
+// # => ID
+// . => classes
 
 function criarPublicacao(evento) {
     evento.preventDefault();
@@ -76,5 +77,47 @@ function descurtirPublicacao(evento) {
         alert("Erro ao descurtir a publicação");
     }).always(function () {
         elementoClicado.prop('disabled', false);
+    });
+}
+
+function atualizarPublicacao() {
+    $(this).prop('disabled', true);
+
+    const publicacaoId = $(this).data('publicacao-id');
+
+    $.ajax({
+        url: `/publicacoes/${publicacaoId}`,
+        method: "PUT",
+        data: {
+            titulo: $('#titulo').val(),
+            conteudo: $('#conteudo').val(),
+        }
+    }).done(function () {
+        alert("Publicação editada com sucesso!")
+    }).fail(function () {
+        alert("Erro ao editar a publicação!")
+    }).always(function () {
+        $('#atualizar-publicacao').prop('disabled', false);
+    });
+}
+
+function deletarPublicacao(evento) {
+    evento.preventDefault();
+
+    const elementoClicado = $(evento.target);
+    const publicacao = elementoClicado.closest('div');
+    const publicacaoID = publicacao.data('publicacao-id');
+
+    elementoClicado.prop('disabled', true);
+
+    $.ajax({
+        url: `/publicacoes/${publicacaoID}`,
+        method: "DELETE"
+    }).done(function () {
+        publicacao.fadeOut("slow", function () {
+            $(this).remove();
+        });
+    }).fail(function () {
+        alert("Erro ao excluir a publicação!")
     });
 }
